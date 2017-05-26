@@ -1,0 +1,29 @@
+{
+  "name": "vrestapi",
+  "version": "0.0.0",
+  "description": "Unofficial vREST api for command line",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/codeofnode/vrestapi.git"
+  },
+  "keywords": [
+    "vrest",
+    "api",
+    "rest",
+    "testing",
+    "cli"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
+  "author": "Ramesh Kumar <codeofnode@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codeofnode/vrestapi/issues"
+  },
+  "homepage": "https://github.com/codeofnode/vrestapi#readme"
+}
