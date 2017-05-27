@@ -1,5 +1,6 @@
 import assert from 'assert'
-import { noop, isObect, ifNoCaseKeyExists, pick } from '../src/lib/util'
+const util = require(`../${process.env.TEST_DIR||'src'}/lib/util`)
+const { noop, isObect, ifNoCaseKeyExists, pick } = util;
 
 describe('isObect', () => {
   it('string', () => {

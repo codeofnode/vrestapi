@@ -1,5 +1,5 @@
 import assert from 'assert'
-import request from '../src/lib/request'
+const request = require(`../${process.env.TEST_DIR||'src'}/lib/request`).default
 
 describe('GET', () => {
   describe('simplest', () => {

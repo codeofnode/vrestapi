@@ -3,7 +3,7 @@ import https from 'https';
 import urlp from 'url';
 import { noop, isObect, ifNoCaseKeyExists, pick } from './util';
 
-function func(options, cb = noop) {
+function request(options, cb = noop) {
   let url;
   let method;
   let payload;
@@ -22,7 +22,7 @@ function func(options, cb = noop) {
   if (typeof headers !== 'object' || headers === null) headers = {};
   const obj = urlp.parse(url);
   obj.method = method;
-  if (!ifNoCaseKeyExists(headers)) headers['content-type'] = 'application/json';
+  if (!ifNoCaseKeyExists(headers,'content-type')) headers['content-type'] = 'application/json';
   obj.headers = headers;
   const req = (obj.protocol === 'https:' ? https : http).request(obj, (res) => {
     let resc = '';
@@ -52,4 +52,4 @@ function func(options, cb = noop) {
   return req;
 }
 
-export default func;
+export default request;
