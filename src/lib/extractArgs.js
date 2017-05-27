@@ -9,7 +9,7 @@ const ALLOWED_LOG_LEVELS = ['prod', 'test', 'dev'];
 
 const options = { };
 let showHelp = false;
-const { version, what, desc } = require('../package.json'); // eslint-disable-line import/no-unresolved
+const { version, name, description } = require('../package.json'); // eslint-disable-line import/no-unresolved
 
 const argvs = process.argv.slice(2);
 const arl = argvs.length;
@@ -50,7 +50,7 @@ for (let z = 0; z < arl; z += 1) {
 }
 
 if (showHelp) {
-  console.log(`\n    ${what} - ${desc} .\n`); // eslint-disable-line no-console
+  console.log(`\n    ${name} - ${description} .\n`); // eslint-disable-line no-console
   console.log(`    version - ${version}\n`); // eslint-disable-line no-console
   if (typeof showHelp === 'string') {
     console.error(showHelp);  // eslint-disable-line no-console
