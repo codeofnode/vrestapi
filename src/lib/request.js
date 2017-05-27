@@ -22,7 +22,7 @@ function request(options, cb = noop) {
   if (typeof headers !== 'object' || headers === null) headers = {};
   const obj = urlp.parse(url);
   obj.method = method;
-  if (!ifNoCaseKeyExists(headers,'content-type')) headers['content-type'] = 'application/json';
+  if (!ifNoCaseKeyExists(headers, 'content-type')) headers['content-type'] = 'application/json';
   obj.headers = headers;
   const req = (obj.protocol === 'https:' ? https : http).request(obj, (res) => {
     let resc = '';
