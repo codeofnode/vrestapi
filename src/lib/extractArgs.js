@@ -59,7 +59,7 @@ if (showHelp) {
 }
 
 if (!(Object.prototype.hasOwnProperty.call(options, 'loglevel'))) {
-  const loglevel = ALLOWED_LOG_LEVELS.indexOf(process.end.NODE_ENV);
+  const loglevel = ALLOWED_LOG_LEVELS.indexOf(process.env.NODE_ENV);
   if (loglevel !== -1) {
     options.loglevel = loglevel;
   }
