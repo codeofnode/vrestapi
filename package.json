@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Unofficial vREST api for command line",
   "main": "index.js",
+  "bin": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,5 +26,18 @@
   "bugs": {
     "url": "https://github.com/codeofnode/vrestapi/issues"
   },
-  "homepage": "https://github.com/codeofnode/vrestapi#readme"
+  "homepage": "https://github.com/codeofnode/vrestapi#readme",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-preset-env": "^1.5.1"
+  },
+  "babel":{
+    "presets": [
+      ["env", {
+        "targets": {
+          "node": ">=4"
+        }
+      }]
+    ]
+  }
 }
