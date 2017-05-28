@@ -40,6 +40,29 @@ for (let z = 0; z < arl; z += 1) {
         showHelp = `Allowed values for \`${key}\` must be one of \`${String(ALLOWED_LOG_LEVELS)}\`.`;
       }
       break;
+    case '-E':
+    case '--email':
+      if (typeof val === 'string') {
+        options.email = val;
+      }
+      break;
+    case '-P':
+    case '--password':
+      if (typeof val === 'string') {
+        options.password = val;
+      }
+      break;
+    case '-U':
+    case '--url':
+      if (typeof val === 'string') {
+        options.url = val;
+      }
+      break;
+    case '--vrestbaseurl':
+      if (typeof val === 'string') {
+        options.vrestbaseurl = val;
+      }
+      break;
     case '-h':
     case '--help':
       showHelp = true;
@@ -49,13 +72,41 @@ for (let z = 0; z < arl; z += 1) {
   }
 }
 
-if (showHelp) {
+if (!(showHelp)) {
+  if (!(Object.prototype.hasOwnProperty.call(options, 'email'))) {
+    showError('Login email is a required input. Pass it as --email=<youremail>');
+  }
+  if (!(Object.prototype.hasOwnProperty.call(options, 'password'))) {
+    options.password = process.env.VREST_PASSWORD;
+  }
+  if (typeof options.password !== 'string') {
+    showError('Login password is a required input. Pass it as --password=<your_vrest_password>');
+  }
+  if (!(Object.prototype.hasOwnProperty.call(options, 'url'))) {
+    showError('URL is a required input. Pass it as --url=<your_vrest_fetch_url>');
+  }
+  if (options.url.indexOf('http') !== -1) {
+    showError('URL is invalid. It must start with `https`');
+  }
+  if (!(Object.prototype.hasOwnProperty.call(options, 'url'))) {
+    options.vrestbaseurl = 'https://vrest.io/';
+  }
+  if (options.vrestbaseurl.indexOf('http') !== -1) {
+    showError('vREST base URL is invalid. It must start with `https`');
+  }
+}
+
+function showError(message){
   console.log(`\n    ${name} - ${description} .\n`); // eslint-disable-line no-console
   console.log(`    version - ${version}\n`); // eslint-disable-line no-console
-  if (typeof showHelp === 'string') {
-    console.error(showHelp);  // eslint-disable-line no-console
+  if (typeof message === 'string') {
+    console.error(message);  // eslint-disable-line no-console
   }
   process.exit(2);
+}
+
+if (showHelp) {
+  showError(showHelp);
 }
 
 if (!(Object.prototype.hasOwnProperty.call(options, 'loglevel'))) {
