@@ -1,7 +1,7 @@
 import http from 'http';
 import https from 'https';
 import urlp from 'url';
-import { isObect, ifNoCaseKeyExists, pick } from './util';
+import { isObect, ifNoCaseKeyExists, pick, stringify } from './util';
 
 class RequestError extends Error {
   constructor(message) {
@@ -56,7 +56,7 @@ function request(options) {
       res.on('end', respond);
     });
     if (payload !== undefined) {
-      payload = JSON.stringify(payload);
+      payload = stringify(payload);
       req.write(payload);
     }
     req.once('error', reject);

@@ -1,15 +1,16 @@
 import request from './lib/request';
-import { log } from './lib/logger';
+import { pick } from './lib/util';
+import { error, log } from './lib/logger';
 import options from './lib/extractArgs';
 
 function signin() {
-  request({
+  return request({
     url: `${options.vrestbaseurl}user/signin`,
     method: 'POST',
-    payload: `{"email":"${options.email}","password":"${options.password}"}`,
-  }).then((resp) => {
-    log(resp.parsed);
+    payload: pick(options, 'email', 'password'),
   });
 }
 
-signin();
+signin()
+.then(log)
+.catch(error);

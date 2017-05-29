@@ -15,3 +15,15 @@ export function ifNoCaseKeyExists(ob, key) {
 export function pick(o, ...props) {
   return Object.assign({}, ...props.map(prop => ({ [prop]: o[prop] })));
 }
+
+export function stringify(input) {
+  if (typeof input === 'string') return input;
+  if (typeof input === 'object') {
+    try {
+      return JSON.stringify(input);
+    } catch (err) {
+      return String(input);
+    }
+  }
+  return String(input);
+}

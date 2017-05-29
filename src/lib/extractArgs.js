@@ -95,13 +95,13 @@ if (!(showHelp)) {
   if (!(Object.prototype.hasOwnProperty.call(options, 'url'))) {
     showError('URL is a required input. Pass it as --url=<your_vrest_fetch_url>');
   }
-  if (options.url.indexOf('http') !== -1) {
+  if (options.url.indexOf('http') !== 0) {
     showError('URL is invalid. It must start with `https`');
   }
-  if (!(Object.prototype.hasOwnProperty.call(options, 'url'))) {
+  if (!(Object.prototype.hasOwnProperty.call(options, 'vrestbaseurl'))) {
     options.vrestbaseurl = 'https://vrest.io/';
   }
-  if (options.vrestbaseurl.indexOf('http') !== -1) {
+  if (options.vrestbaseurl.indexOf('http') !== 0) {
     showError('vREST base URL is invalid. It must start with `https`');
   }
 }
