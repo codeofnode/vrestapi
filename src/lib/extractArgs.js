@@ -111,7 +111,7 @@ if (!(showHelp)) {
     options.apicall = 'export';
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'filepath'))) {
-    options.filepath = process.cwd() + '/vrest_file.json';
+    options.filepath = `${process.cwd()}/vrest_file.json`;
   }
   if (options.vrestbaseurl.indexOf('http') !== 0) {
     showError('vREST base URL is invalid. It must start with `https`');
