@@ -50,7 +50,7 @@ function request(options) {
             toSend.parseError = er;
           }
         }
-        if((toSend.statusCode % 100) === 2){
+        if(Math.floor((toSend.statusCode / 100)) === 2){
           cb(null, toSend);
         } else {
           cb(toSend);
