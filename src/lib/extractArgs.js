@@ -53,24 +53,24 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
     case '-e':
     case '--email':
       if (typeof value === 'string') {
-        options.email = val;
+        options.email = value;
       }
       break;
     case '-p':
     case '--password':
       if (typeof value === 'string') {
-        options.password = val;
+        options.password = value;
       }
       break;
     case '-u':
     case '--url':
       if (typeof value === 'string') {
-        options.url = val;
+        options.url = value;
       }
       break;
     case '--vrestbaseurl':
       if (typeof value === 'string') {
-        options.vrestbaseurl = val;
+        options.vrestbaseurl = value;
       }
       break;
     case '-h':
