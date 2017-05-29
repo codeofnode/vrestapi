@@ -50,7 +50,11 @@ function request(options) {
             toSend.parseError = er;
           }
         }
-        cb(null, toSend);
+        if((toSend.statusCode % 100) === 2){
+          cb(null, toSend);
+        } else {
+          cb(toSend);
+        }
       }
       res.on('error', respond);
       res.on('end', respond);

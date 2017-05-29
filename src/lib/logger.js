@@ -1,6 +1,7 @@
 import options from './extractArgs';
 
 export function error(...args) {
+  console.log(args);
   if (options.loglevel > -1) {
     console.error(...args); // eslint-disable-line no-console
   }
@@ -11,6 +12,7 @@ export function warn(...args) {
   }
 }
 export function log(...args) {
+  console.log(args);
   if (options.loglevel > 1) {
     console.log(...args); // eslint-disable-line no-console
   }

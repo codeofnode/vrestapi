@@ -11,6 +11,7 @@ function signin() {
   });
 }
 
-signin()
-.then(log)
-.catch(error);
+async function main() {
+  await signin;
+  return signin();
+}
