@@ -4,25 +4,35 @@ const getStringValue = (inp) => {
   return undefined;
 };
 
+const { version, name, description } = require('../package.json'); // eslint-disable-line import/no-unresolved
+
+const showError = function showError(message) {
+  console.log(`\n    ${name} - ${description} .\n`); // eslint-disable-line no-console
+  console.log(`    version - ${version}\n`); // eslint-disable-line no-console
+  if (typeof message === 'string') {
+    console.error(message);  // eslint-disable-line no-console
+  }
+  process.exit(2);
+};
+
 const ALLOWED_API_CALLS = ['export', 'import'];
 const ALLOWED_LOG_LEVELS = ['prod', 'test', 'dev'];
 
 const options = { };
 let showHelp = false;
-const { version, name, description } = require('../package.json'); // eslint-disable-line import/no-unresolved
 
 const argvs = process.argv.slice(2);
 const arl = argvs.length;
-for (let z = 0; z < arl; z += 1) {
-  const arg = argvs[z];
-  const ind = arg.indexOf('=');
+for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
+  arg = argvs[z];
+  ind = arg.indexOf('=');
   if (ind === -1) {
     showHelp = `Argument ${arg} must have \`=\` as separator.`;
     break;
   }
-  const key = arg.substr(0, ind);
-  const value = getStringValue(arg.substr(ind + 1));
-  const val = ALLOWED_LOG_LEVELS.indexOf(value);
+  key = arg.substr(0, ind);
+  value = getStringValue(arg.substr(ind + 1));
+  val = ALLOWED_LOG_LEVELS.indexOf(value);
   switch (key.toLowerCase()) {
     case '-c':
     case '--apicall':
@@ -40,26 +50,26 @@ for (let z = 0; z < arl; z += 1) {
         showHelp = `Allowed values for \`${key}\` must be one of \`${String(ALLOWED_LOG_LEVELS)}\`.`;
       }
       break;
-    case '-E':
+    case '-e':
     case '--email':
-      if (typeof val === 'string') {
+      if (typeof value === 'string') {
         options.email = val;
       }
       break;
-    case '-P':
+    case '-p':
     case '--password':
-      if (typeof val === 'string') {
+      if (typeof value === 'string') {
         options.password = val;
       }
       break;
-    case '-U':
+    case '-u':
     case '--url':
-      if (typeof val === 'string') {
+      if (typeof value === 'string') {
         options.url = val;
       }
       break;
     case '--vrestbaseurl':
-      if (typeof val === 'string') {
+      if (typeof value === 'string') {
         options.vrestbaseurl = val;
       }
       break;
@@ -94,15 +104,6 @@ if (!(showHelp)) {
   if (options.vrestbaseurl.indexOf('http') !== -1) {
     showError('vREST base URL is invalid. It must start with `https`');
   }
-}
-
-function showError(message){
-  console.log(`\n    ${name} - ${description} .\n`); // eslint-disable-line no-console
-  console.log(`    version - ${version}\n`); // eslint-disable-line no-console
-  if (typeof message === 'string') {
-    console.error(message);  // eslint-disable-line no-console
-  }
-  process.exit(2);
 }
 
 if (showHelp) {
