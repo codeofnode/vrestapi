@@ -15,19 +15,23 @@ function extractCookie(data) {
   return data.headers['set-cookie'][0];
 }
 
-function callFetchApi(cook) {
-  return request({
-    url: options.url,
-    method: 'GET',
-    headers: { Cookie: cook },
-  });
+function callApi(cook) {
+  switch(options.apicall){
+    case 'export' :
+      return request({
+        url: options.url.replace('/g/','/f/json/'),
+        method: 'GET',
+        headers: { Cookie: cook },
+      });
+    case 'import' :
+  }
 }
 
 async function main() {
   try {
     let data = await signin();
     data = extractCookie(data);
-    await callFetchApi(data);
+    await callApi(data);
   } catch (erm) {
     error(erm);
   }

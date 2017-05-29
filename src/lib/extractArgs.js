@@ -62,6 +62,12 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
         options.password = value;
       }
       break;
+    case '-f':
+    case '--filepath':
+      if (typeof value === 'string') {
+        options.filepath = value;
+      }
+      break;
     case '-u':
     case '--url':
       if (typeof value === 'string') {
@@ -100,6 +106,12 @@ if (!(showHelp)) {
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'vrestbaseurl'))) {
     options.vrestbaseurl = 'https://vrest.io/';
+  }
+  if (!(Object.prototype.hasOwnProperty.call(options, 'apicall'))) {
+    options.apicall = 'export';
+  }
+  if (!(Object.prototype.hasOwnProperty.call(options, 'filepath'))) {
+    options.filepath = process.cwd() + '/vrest_file.json';
   }
   if (options.vrestbaseurl.indexOf('http') !== 0) {
     showError('vREST base URL is invalid. It must start with `https`');
