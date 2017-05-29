@@ -1,6 +1,6 @@
 import request from './lib/request';
 import { pick } from './lib/util';
-import { error, log } from './lib/logger';
+import { error } from './lib/logger';
 import options from './lib/extractArgs';
 
 function signin() {
@@ -11,15 +11,15 @@ function signin() {
   });
 }
 
-function extractCookie(data){
+function extractCookie(data) {
   return data.headers['set-cookie'][0];
 }
 
-function callFetchApi(cook){
+function callFetchApi(cook) {
   return request({
     url: options.url,
-    method: 'GET'
-    headers : { Cookie : cook }
+    method: 'GET',
+    headers: { Cookie: cook },
   });
 }
 
@@ -27,8 +27,8 @@ async function main() {
   try {
     let data = await signin();
     data = extractCookie(data);
-    data = await callFetchApi(data);
-  } catch(erm){
+    await callFetchApi(data);
+  } catch (erm) {
     error(erm);
   }
 }
