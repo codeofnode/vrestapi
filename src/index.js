@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import fs from 'fs';
 import request from './lib/request';
 import { pick } from './lib/util';
