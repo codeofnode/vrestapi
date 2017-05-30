@@ -27,20 +27,20 @@ function saveToFile(data) {
 }
 
 function callApi(cook) {
+  const urlob = urlp.parse(options.url, true);
   switch (options.apicall) {
     case 'import' :
-      const urlob = urlp.parse(options.url,true);
       return request({
-        url: `${urlob.protocol}//${urlob.host}${urlob.pathname.replace('/g/',`/import/${urlob.query.projectId}/json/`)}`,
+        url: `${urlob.protocol}//${urlob.host}${urlob.pathname.replace('/g/', `/import/${urlob.query.projectId}/json/`)}`,
         method: 'POST',
         headers: { cookie: cook },
         payloadStream: fs.createReadStream(options.filepath),
         multipartOptions: {
-          formData : {
+          formData: {
             tsAction: options.tsaction,
             _op: options.update,
-            testSuiteId: options.testsuiteid
-          }
+            testSuiteId: options.testsuiteid,
+          },
         },
       });
     default :

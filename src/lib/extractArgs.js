@@ -124,11 +124,11 @@ if (!(showHelp)) {
   if (!(Object.prototype.hasOwnProperty.call(options, 'apicall'))) {
     options.apicall = 'export';
   }
-  if (options.apicall === 'import'){
+  if (options.apicall === 'import') {
     if (!(Object.prototype.hasOwnProperty.call(options, 'testsuiteid'))) {
       showError('Import call must have test suite id. Pass it as parameter --testsuiteid=<testsuiteid>');
     }
-    if (options.update !== 0){
+    if (options.update !== 0) {
       options.update = 1;
     }
   }

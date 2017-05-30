@@ -64,35 +64,24 @@ function request(options) {
     if (payload !== undefined) {
       payload = stringify(payload);
       req.end(payload);
-    } else if (options.payloadStream instanceof fs.ReadStream){
-      if (!(isObject(options.multipartOptions))) {
-        options.multipartOptions = {};
-      }
-      const mo = options.multipartOptions;
+    } else if (options.payloadStream instanceof fs.ReadStream) {
+      const mo = (isObject(options.multipartOptions) ? options.multipartOptions : {});
       if (!(mo.boundaryKey)) {
         mo.boundaryKey = Math.random().toString(16);
       }
-      req.setHeader('content-type', 'multipart/form-data; boundary="'+mo.boundaryKey+'"');
-      if(mo.contentLength){
+      req.setHeader('content-type', `multipart/form-data; boundary="${mo.boundaryKey}"`);
+      if (mo.contentLength) {
         req.setHeader('Content-Length', mo.contentLength);
       }
       if (isObject(mo.formData)) {
-        for(let formKey in mo.formData){
-          req.write(
-            '--' + mo.boundaryKey + '\r\n'
-            + 'Content-Disposition: form-data; name="'+formKey+'"\r\n'
-            + mo.formData[formKey] + '\r\n'
-          );
-        }
+        Object.entries(mo.formData).forEach(([formKey, formValue]) => {
+          req.write(`--${mo.boundaryKey}\r\nContent-Disposition: form-data; name="${formKey}"\r\n${formValue}\r\n`);
+        });
       }
-      req.write(
-        '--' + mo.boundaryKey + '\r\n'
-        + 'Content-Type: '+ (mo.mimeType || 'application/octet-stream') +'\r\n'
-        + 'Content-Disposition: form-data; name="'+ (mo.fieldName || 'file1') +'"; filename="'+ (mo.fileName || 'filename') +'"\r\n'
-      );
-      options.payloadStream.pipe(req, { end : false });
-      options.payloadStream.once('end',req.end.bind(req,'\r\n--' + mo.boundaryKey + '--'));
-      options.payloadStream.once('error',reject);
+      req.write(`--${mo.boundaryKey}\r\nContent-Type: ${(mo.mimeType || 'application/octet-stream')}\r\nContent-Disposition: form-data; name="${(mo.fieldName || 'file1')}"; filename="${(mo.fileName || 'filename')}"\r\n`);
+      options.payloadStream.pipe(req, { end: false });
+      options.payloadStream.once('end', req.end.bind(req, `\r\n--${mo.boundaryKey}--`));
+      options.payloadStream.once('error', reject);
     } else {
       req.end();
     }
