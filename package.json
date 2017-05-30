@@ -6,7 +6,7 @@
   "scripts": {
     "start": "./node_modules/.bin/babel-node src",
     "build": "rm -rf dist && mkdir dist && ./node_modules/.bin/json -f package.json -e \"delete this.devDependencies;delete this.scripts;delete this.nyc;delete this.babel\" > dist/package.json && ./node_modules/.bin/babel src -d dist",
-    "pr": "rm -f $HOME/workspace/vrest-cli/index.js && rm -rf $HOME/workspace/vrest-cli/src && mkdir $HOME/workspace/vrest-cli/src && ./node_modules/.bin/babel src -d $HOME/workspace/vrest-cli",
+    "pr": "rm -rf $HOME/workspace/vrest-cli/src && cp -r src $HOME/workspace/vrest-cli/",
     "prodtest": "TEST_DIR=dist npm run test",
     "test": "./node_modules/.bin/cross-env NODE_ENV=test ./node_modules/.bin/nyc ./node_modules/.bin/mocha -b",
     "all":"npm run lint && npm test && npm run build && npm run prodtest && npm run pr",
