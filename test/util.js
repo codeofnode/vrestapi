@@ -1,19 +1,19 @@
 import assert from 'assert'
 const util = require(`../${process.env.TEST_DIR||'src'}/lib/util`)
-const { noop, isObect, ifNoCaseKeyExists, pick } = util;
+const { noop, isObject, ifNoCaseKeyExists, pick } = util;
 
-describe('isObect', () => {
+describe('isObject', () => {
   it('string', () => {
-    assert.equal(isObect('owier'), false)
+    assert.equal(isObject('owier'), false)
   })
   it('object', () => {
-    assert.equal(isObect({}), true)
+    assert.equal(isObject({}), true)
   })
   it('array', () => {
-    assert.equal(isObect([]), false)
+    assert.equal(isObject([]), false)
   })
   it('null', () => {
-    assert.equal(isObect(null), false)
+    assert.equal(isObject(null), false)
   })
 })
 
