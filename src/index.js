@@ -1,13 +1,13 @@
 import fs from 'fs';
-import urlp from 'url';
 import request from './lib/request';
 import { pick } from './lib/util';
 import { error } from './lib/logger';
 import options from './lib/extractArgs';
 
 function signin() {
+  const urlob = options.parsedurl;
   return request({
-    url: `${options.vrestbaseurl}user/signin`,
+    url: `${urlob.protocol}//${urlob.host}/user/signin`,
     method: 'POST',
     payload: pick(options, 'email', 'password'),
   });
@@ -27,7 +27,7 @@ function saveToFile(data) {
 }
 
 function callApi(cook) {
-  const urlob = urlp.parse(options.url, true);
+  const urlob = options.parsedurl;
   switch (options.apicall) {
     case 'import' :
       return request({

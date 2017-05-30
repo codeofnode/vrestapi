@@ -19,7 +19,7 @@ function request(options) {
   let parser;
   return new Promise((resolve, reject) => {
     function cb(error, data) {
-      if (error) reject(new RequestError(error));
+      if (error) reject(typeof error === 'string' ? new RequestError(error) : error);
       else resolve(data);
     }
     if (typeof options === 'string') {

@@ -1,3 +1,5 @@
+import urlp from 'url';
+
 const getStringValue = (inp) => {
   if (inp === '1' || inp === 'true') return true;
   if (inp) return inp;
@@ -88,11 +90,6 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
     case '--update':
       options.update = value ? 1 : 0;
       break;
-    case '--vrestbaseurl':
-      if (typeof value === 'string') {
-        options.vrestbaseurl = value;
-      }
-      break;
     case '-h':
     case '--help':
       showHelp = true;
@@ -118,9 +115,6 @@ if (!(showHelp)) {
   if (options.url.indexOf('http') !== 0) {
     showError('URL is invalid. It must start with `https`');
   }
-  if (!(Object.prototype.hasOwnProperty.call(options, 'vrestbaseurl'))) {
-    options.vrestbaseurl = 'https://vrest.io/';
-  }
   if (!(Object.prototype.hasOwnProperty.call(options, 'apicall'))) {
     options.apicall = 'export';
   }
@@ -134,9 +128,6 @@ if (!(showHelp)) {
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'filepath'))) {
     options.filepath = `${process.cwd()}/vrest_file.json`;
-  }
-  if (options.vrestbaseurl.indexOf('http') !== 0) {
-    showError('vREST base URL is invalid. It must start with `https`');
   }
 }
 
@@ -153,5 +144,7 @@ if (!(Object.prototype.hasOwnProperty.call(options, 'loglevel'))) {
 if (!(Object.prototype.hasOwnProperty.call(options, 'loglevel'))) {
   options.loglevel = 0;
 }
+
+options.parsedurl = urlp.parse(options.url, true);
 
 export default options;
