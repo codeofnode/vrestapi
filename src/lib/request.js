@@ -67,20 +67,20 @@ function request(options) {
     } else if (options.payloadStream instanceof fs.ReadStream) {
       const mo = (isObject(options.multipartOptions) ? options.multipartOptions : {});
       if (!(mo.boundaryKey)) {
-        mo.boundaryKey = Math.random().toString(16);
+        mo.boundaryKey = Math.random().toString(16).substr(2, 11);
       }
-      req.setHeader('content-type', `multipart/form-data; boundary="${mo.boundaryKey}"`);
+      req.setHeader('content-type', `multipart/form-data; boundary="----${mo.boundaryKey}"`);
       if (mo.contentLength) {
         req.setHeader('Content-Length', mo.contentLength);
       }
       if (isObject(mo.formData)) {
         Object.entries(mo.formData).forEach(([formKey, formValue]) => {
-          req.write(`--${mo.boundaryKey}\r\nContent-Disposition: form-data; name="${formKey}"\r\n${formValue}\r\n`);
+          req.write(`------${mo.boundaryKey}\r\nContent-Disposition: form-data; name="${formKey}"\r\n\r\n${formValue}\r\n`);
         });
       }
-      req.write(`--${mo.boundaryKey}\r\nContent-Type: ${(mo.mimeType || 'application/octet-stream')}\r\nContent-Disposition: form-data; name="${(mo.fieldName || 'file1')}"; filename="${(mo.fileName || 'filename')}"\r\n`);
+      req.write(`------${mo.boundaryKey}\r\nContent-Type: ${(mo.mimeType || 'application/octet-stream')}\r\nContent-Disposition: form-data; name="${(mo.fieldName || 'file1')}"; filename="${(mo.fileName || 'filename')}"\r\n\r\n`);
       options.payloadStream.pipe(req, { end: false });
-      options.payloadStream.once('end', req.end.bind(req, `\r\n--${mo.boundaryKey}--`));
+      options.payloadStream.once('end', req.end.bind(req, `\r\n------${mo.boundaryKey}--\r\n`));
       options.payloadStream.once('error', reject);
     } else {
       req.end();

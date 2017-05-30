@@ -41,6 +41,7 @@ function callApi(cook) {
             _op: options.update,
             testSuiteId: options.testsuiteid,
           },
+          mimeType: 'application/json',
         },
       });
     default :

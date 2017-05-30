@@ -88,7 +88,7 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
       break;
     case '-o':
     case '--update':
-      options.update = value ? 1 : 0;
+      options.update = value ? 2 : 0;
       break;
     case '-h':
     case '--help':
@@ -115,6 +115,9 @@ if (!(showHelp)) {
   if (options.url.indexOf('http') !== 0) {
     showError('URL is invalid. It must start with `https`');
   }
+  if (options.tsaction !== 'def') {
+    options.tsaction = 'onl';
+  }
   if (!(Object.prototype.hasOwnProperty.call(options, 'apicall'))) {
     options.apicall = 'export';
   }
@@ -123,7 +126,7 @@ if (!(showHelp)) {
       showError('Import call must have test suite id. Pass it as parameter --testsuiteid=<testsuiteid>');
     }
     if (options.update !== 0) {
-      options.update = 1;
+      options.update = 2;
     }
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'filepath'))) {
