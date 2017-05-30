@@ -1,4 +1,4 @@
-export const isObect = ob => (typeof ob === 'object' && ob !== null && !(Array.isArray(ob)));
+export const isObject = ob => (typeof ob === 'object' && ob !== null && !(Array.isArray(ob)));
 
 export function noop() {}
 

@@ -74,6 +74,20 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
         options.url = value;
       }
       break;
+    case '-t':
+    case '--testsuiteid':
+      if (typeof value === 'string') {
+        options.testsuiteid = value;
+      }
+      break;
+    case '-a':
+    case '--action':
+      options.tsaction = value === 'def' ? 'def' : 'onl';
+      break;
+    case '-o':
+    case '--update':
+      options.update = value ? 1 : 0;
+      break;
     case '--vrestbaseurl':
       if (typeof value === 'string') {
         options.vrestbaseurl = value;
@@ -109,6 +123,14 @@ if (!(showHelp)) {
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'apicall'))) {
     options.apicall = 'export';
+  }
+  if (options.apicall === 'import'){
+    if (!(Object.prototype.hasOwnProperty.call(options, 'testsuiteid'))) {
+      showError('Import call must have test suite id. Pass it as parameter --testsuiteid=<testsuiteid>');
+    }
+    if (options.update !== 0){
+      options.update = 1;
+    }
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'filepath'))) {
     options.filepath = `${process.cwd()}/vrest_file.json`;

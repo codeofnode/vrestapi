@@ -1,7 +1,8 @@
 import http from 'http';
 import https from 'https';
 import urlp from 'url';
-import { isObect, ifNoCaseKeyExists, pick, stringify } from './util';
+import fs from 'fs';
+import { isObject, ifNoCaseKeyExists, pick, stringify } from './util';
 
 class RequestError extends Error {
   constructor(message) {
@@ -23,7 +24,7 @@ function request(options) {
     }
     if (typeof options === 'string') {
       [url, method, parser] = [options, 'GET', JSON.parse];
-    } else if (isObect(options)) {
+    } else if (isObject(options)) {
       ({ url, method, payload, headers } = options);
       parser = (typeof options.parser === 'function' ? options.parser : JSON.parse);
     } else {
@@ -59,12 +60,42 @@ function request(options) {
       res.on('error', respond);
       res.on('end', respond);
     });
+    req.once('error', reject);
     if (payload !== undefined) {
       payload = stringify(payload);
-      req.write(payload);
+      req.end(payload);
+    } else if (options.payloadStream instanceof fs.ReadStream){
+      if (!(isObject(options.multipartOptions))) {
+        options.multipartOptions = {};
+      }
+      const mo = options.multipartOptions;
+      if (!(mo.boundaryKey)) {
+        mo.boundaryKey = Math.random().toString(16);
+      }
+      req.setHeader('content-type', 'multipart/form-data; boundary="'+mo.boundaryKey+'"');
+      if(mo.contentLength){
+        req.setHeader('Content-Length', mo.contentLength);
+      }
+      if (isObject(mo.formData)) {
+        for(let formKey in mo.formData){
+          req.write(
+            '--' + mo.boundaryKey + '\r\n'
+            + 'Content-Disposition: form-data; name="'+formKey+'"\r\n'
+            + mo.formData[formKey] + '\r\n'
+          );
+        }
+      }
+      req.write(
+        '--' + mo.boundaryKey + '\r\n'
+        + 'Content-Type: '+ (mo.mimeType || 'application/octet-stream') +'\r\n'
+        + 'Content-Disposition: form-data; name="'+ (mo.fieldName || 'file1') +'"; filename="'+ (mo.fileName || 'filename') +'"\r\n'
+      );
+      options.payloadStream.pipe(req, { end : false });
+      options.payloadStream.once('end',req.end.bind(req,'\r\n--' + mo.boundaryKey + '--'));
+      options.payloadStream.once('error',reject);
+    } else {
+      req.end();
     }
-    req.once('error', reject);
-    req.end();
     return undefined;
   });
 }
