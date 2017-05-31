@@ -33,7 +33,7 @@ function callApi(cook) {
   switch (options.apicall) {
     case 'import' :
       return request({
-        url: `${urlob.protocol}//${urlob.host}${urlob.pathname.replace('/g/', `/import/${urlob.query.projectId}/json/`)}`,
+        url: `${urlob.protocol}//${urlob.host}${urlob.pathname.replace('/g/', `/import/${urlob.query.projectId}/${options.from}/`)}`,
         method: 'POST',
         headers: { cookie: cook },
         payloadStream: fs.createReadStream(options.filepath),
@@ -48,7 +48,7 @@ function callApi(cook) {
       });
     default :
       return request({
-        url: options.url.replace('/g/', `/f/${options.from}/`),
+        url: options.url.replace('/g/', `/f/json/`),
         method: 'GET',
         headers: { cookie: cook },
       })
