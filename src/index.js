@@ -48,7 +48,7 @@ function callApi(cook) {
       });
     default :
       return request({
-        url: options.url.replace('/g/', `/f/json/`),
+        url: options.url.replace('/g/', '/f/json/'),
         method: 'GET',
         headers: { cookie: cook },
       })
