@@ -19,6 +19,7 @@ const showError = function showError(message) {
 
 const ALLOWED_API_CALLS = ['export', 'import'];
 const ALLOWED_LOG_LEVELS = ['prod', 'test', 'dev'];
+const ALLOWED_FROM = ['swagger', 'json', 'postman'];
 
 const options = { };
 let showHelp = false;
@@ -36,7 +37,7 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
   value = getStringValue(arg.substr(ind + 1));
   val = ALLOWED_LOG_LEVELS.indexOf(value);
   switch (key.toLowerCase()) {
-    case '-c':
+    case '-a':
     case '--apicall':
       if (ALLOWED_API_CALLS.indexOf(value) !== -1) {
         options.apicall = value;
@@ -82,13 +83,21 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
         options.testsuiteid = value;
       }
       break;
-    case '-a':
-    case '--action':
-      options.tsaction = value === 'def' ? 'def' : 'onl';
+    case '-s':
+    case '--selectedtestsuite':
+      options.tsaction = value;
       break;
-    case '-o':
-    case '--update':
-      options.update = value ? 2 : 0;
+    case '-m':
+    case '--from':
+      if (ALLOWED_FROM.indexOf(value) !== -1) {
+        options.from = value;
+      } else {
+        showHelp = `Allowed values for \`${key}\` must be one of \`${String(ALLOWED_FROM)}\`.`;
+      }
+      break;
+    case '-c':
+    case '--create':
+      options.update = value;
       break;
     case '-h':
     case '--help':
@@ -110,14 +119,12 @@ if (!(showHelp)) {
     showError('Login password is a required input. Pass it as --password=<your_vrest_password>');
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'url'))) {
-    showError('URL is a required input. Pass it as --url=<your_vrest_fetch_url>');
+    showError('URL is a required input. Pass it as --url="<your_vrest_fetch_url>"');
   }
   if (options.url.indexOf('http') !== 0) {
     showError('URL is invalid. It must start with `https`');
   }
-  if (options.tsaction !== 'def') {
-    options.tsaction = 'onl';
-  }
+  options.tsaction = options.tsaction ? 'onl' : 'def';
   if (!(Object.prototype.hasOwnProperty.call(options, 'apicall'))) {
     options.apicall = 'export';
   }
@@ -125,8 +132,9 @@ if (!(showHelp)) {
     if (!(Object.prototype.hasOwnProperty.call(options, 'testsuiteid'))) {
       showError('Import call must have test suite id. Pass it as parameter --testsuiteid=<testsuiteid>');
     }
-    if (options.update !== 0) {
-      options.update = 2;
+    options.update = options.update ? 0 : 2;
+    if (!(Object.prototype.hasOwnProperty.call(options, 'from'))) {
+      options.from = 'json';
     }
   }
   if (!(Object.prototype.hasOwnProperty.call(options, 'filepath'))) {
