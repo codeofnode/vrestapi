@@ -30,7 +30,7 @@ for (let ind, arg, key, value, val, z = 0; z < arl; z += 1) {
   arg = argvs[z];
   ind = arg.indexOf('=');
   if (ind === -1) {
-    showHelp = `Argument ${arg} must have \`=\` as separator.`;
+    showHelp = true;
     break;
   }
   key = arg.substr(0, ind);
